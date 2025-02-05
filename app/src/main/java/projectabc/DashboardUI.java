@@ -7,8 +7,8 @@ import javafx.stage.Stage;
 public class DashboardUI {
     public DashboardUI(Stage primaryStage, User user) {
         VBox root = new VBox(10);
-        Label userLabel = new Label("Hello" + user.getUsername());
-        TextField amountField = new TextField();
+        Label userLabel = new Label("Hello " + user.getUsername() + "!");
+
         Button depositButton = new Button("Deposit");
         Button withdrawButton = new Button("Withdraw");
 
@@ -30,7 +30,7 @@ public class DashboardUI {
             // else balanceLabel.setText("Insufficient funds.");
         });
 
-        // root.getChildren().addAll(balanceLabel, new Label("Amount:"), amountField, depositButton, withdrawButton);
+        root.getChildren().addAll(userLabel,depositButton, withdrawButton);
         primaryStage.setScene(new Scene(root, 300, 200));
         primaryStage.show();
     }
