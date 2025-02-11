@@ -7,23 +7,28 @@ import com.google.gson.reflect.TypeToken;
 
 public class SaveManager {
     public static void saveUserData(String username, List<ToDoItem> todos) {
-        try (FileWriter writer = new FileWriter("data/" + username + "_todos.json")) {
-            new Gson().toJson(todos, writer);
-        } catch (IOException e) {
+        try (FileWriter writer = new FileWriter(username + "_todos.json")) {
+            String json = new Gson().toJson(todos);
+            String encryptedJson = EncryptionUtil.encrypt(json);  // ✅ เข้ารหัสก่อนบันทึก
+            writer.write(encryptedJson);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+    
 
     public static List<ToDoItem> loadUserData(String username) {
-        File file = new File("data/" + username + "_todos.json");
+        File file = new File(username + "_todos.json");
         if (!file.exists()) {
-            return new ArrayList<>(); // 🔥 ถ้าไฟล์ไม่มี ให้คืนค่าเป็นลิสต์ว่าง
+            return new ArrayList<>();
         }
-        try (FileReader reader = new FileReader(file)) {
-            return new Gson().fromJson(reader, new TypeToken<List<ToDoItem>>() {}.getType());
-        } catch (IOException e) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String encryptedData = reader.readLine();
+            String json = EncryptionUtil.decrypt(encryptedData);  // ✅ ถอดรหัสก่อนโหลด
+            return new Gson().fromJson(json, new TypeToken<List<ToDoItem>>() {}.getType());
+        } catch (Exception e) {
             e.printStackTrace();
-            return new ArrayList<>(); // 🔥 ถ้าอ่านไฟล์ไม่ได้ ให้คืนค่าลิสต์ว่าง
+            return new ArrayList<>();
         }
     }
 }

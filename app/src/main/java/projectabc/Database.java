@@ -11,10 +11,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 public class Database {
-    private static final String FILE_PATH = "users_encrypted.json"; // 🔐 เก็บข้อมูลแบบเข้ารหัส
+    private static final String FILE_PATH = "users_encrypted.json"; //เก็บข้อมูลแบบเข้ารหัส
     private static final String SECRET_KEY = "0123456789abcdef"; // คีย์เข้ารหัส AES (ต้องมี 16 ตัวอักษร)
     private static HashMap<String, String> users = new HashMap<>();
 
+    static {
+        loadUsers();
+    }
     
 
     // โหลดข้อมูลผู้ใช้จากไฟล์ (Decrypt)
@@ -66,9 +69,10 @@ public class Database {
     // บันทึก To-Do List ของผู้ใช้
     public static void saveUserTodos(String username, List<ToDoItem> todoList) {
         SaveManager.saveUserData(username, todoList);
+        
     }
 
-    // 🔐 ฟังก์ชันเข้ารหัส AES
+    // ฟังก์ชันเข้ารหัส AES
     private static String encrypt(String data) {
         try {
             SecretKeySpec secretKey = new SecretKeySpec(SECRET_KEY.getBytes(), "AES");
@@ -80,7 +84,7 @@ public class Database {
         }
     }
 
-    // 🔐 ฟังก์ชันถอดรหัส AES
+    // ฟังก์ชันถอดรหัส AES
     private static String decrypt(String encryptedData) {
         try {
             SecretKeySpec secretKey = new SecretKeySpec(SECRET_KEY.getBytes(), "AES");

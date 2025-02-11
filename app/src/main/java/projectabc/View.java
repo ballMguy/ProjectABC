@@ -5,6 +5,8 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.util.List;
 import javafx.scene.paint.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 public class View {
     private Stage primaryStage;
@@ -23,9 +25,10 @@ public class View {
         Button manageButton = new Button("Manage To-Do List");
 
         logoutButton.setOnAction(e -> {
-            SaveManager.saveUserData(username, todoList);
+            Database.saveUserTodos(username, todoList); // ✅ ใช้ Database แทน SaveManager
             primaryStage.setScene(new AuthApp().getLoginScene());
         });
+        
 
         manageButton.setOnAction(e -> new Manager(primaryStage, username, todoList).showManager());
 

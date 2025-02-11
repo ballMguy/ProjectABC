@@ -56,26 +56,22 @@ public class AuthApp extends Application {
     }
 
     private void handleRegister(String username, String password) {
-        if (users.containsKey(username)) {
-            showAlert("Error", "Username already exists!");
-        } else if (username.isEmpty() || password.isEmpty()) {
-            showAlert("Error", "Username and Password cannot be empty!");
-        } else {
-            users.put(username, password);
+        if (Database.registerUser(username, password)) {
             showAlert("Success", "Registration successful!");
             primaryStage.setScene(getLoginScene());
+        } else {
+            showAlert("Error", "Username already exists!");
         }
     }
-
+    
     private void handleLogin(String username, String password) {
-        if (users.containsKey(username) && users.get(username).equals(password)) {
-            List<ToDoItem> todoList = SaveManager.loadUserData(username);
-            new View(primaryStage, username, todoList).showDashboard();  // ⬅ เปลี่ยนให้เข้า View.java
+        if (Database.validateUser(username, password)) {
+            List<ToDoItem> todoList = Database.loadUserTodos(username);
+            new View(primaryStage, username, todoList).showDashboard();
         } else {
             showAlert("Error", "Invalid username or password!");
         }
     }
-    
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
