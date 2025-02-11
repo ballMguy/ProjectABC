@@ -1,41 +1,38 @@
 package projectabc;
-
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
-import java.util.ArrayList;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+import java.time.LocalDate;
+import java.util.List;
 
 public class Manager {
-    private ArrayList<Task> tasks;
-    private Save saveManager;
-    private Notification notification;
+    private Stage primaryStage;
+    private List<ToDoItem> todoList;
 
-    public Manager() {
-        tasks = new ArrayList<>();
-        saveManager = new Save();
-        notification = new Notification();
-        loadTasks();
+    public Manager(Stage stage, String user, List<ToDoItem> todos) {
+        this.primaryStage = stage;
+        this.todoList = todos;
     }
 
-    public VBox createMainView() {
-        VBox layout = new VBox();
-        ListView<Task> taskListView = new ListView<>();
+    public void showManager() {
+        ListView<ToDoItem> listView = new ListView<>();
+        listView.getItems().addAll(todoList);
 
-        Button addTaskButton = new Button("Add Task");
-        addTaskButton.setOnAction(e -> addTask());
+        TextField taskField = new TextField();
+        DatePicker deadlinePicker = new DatePicker();
+        ComboBox<Tag> tagBox = new ComboBox<>();
+        tagBox.getItems().addAll(Tag.getAvailableTags());
 
-        layout.getChildren().addAll(taskListView, addTaskButton);
+        Button addButton = new Button("Add Task");
+        addButton.setOnAction(e -> {
+            ToDoItem newItem = new ToDoItem(taskField.getText(), deadlinePicker.getValue(), tagBox.getValue());
+            todoList.add(newItem);
+            listView.getItems().add(newItem);
+        });
 
-        return layout;
-    }
-
-    public void addTask() {
-        // Logic for adding a task
-        Task newTask = new Task("New Task");
-        tasks.add(newTask);
-        saveManager.saveTasks(tasks);
-    }
-
-    public void loadTasks() {
-        tasks = saveManager.loadTasks();
+        VBox layout = new VBox(10, listView, taskField, deadlinePicker, tagBox, addButton);
+        primaryStage.setScene(new Scene(layout, 500, 400));
     }
 }
+
