@@ -5,7 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-
+import javafx.scene.paint.Color;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,12 +69,13 @@ public class AuthApp extends Application {
 
     private void handleLogin(String username, String password) {
         if (users.containsKey(username) && users.get(username).equals(password)) {
-            List<ToDoItem> todoList = SaveManager.loadUserData(username); // โหลด To-Do ของผู้ใช้
-            new Manager(primaryStage, username, todoList).showManager();  // ไปที่หน้า Manager
+            List<ToDoItem> todoList = SaveManager.loadUserData(username);
+            new View(primaryStage, username, todoList).showDashboard();  // ⬅ เปลี่ยนให้เข้า View.java
         } else {
             showAlert("Error", "Invalid username or password!");
         }
     }
+    
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

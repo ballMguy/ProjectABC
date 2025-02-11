@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import javafx.scene.paint.Color;
 
 
 public class Main {

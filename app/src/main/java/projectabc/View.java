@@ -4,6 +4,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.util.List;
+import javafx.scene.paint.Color;
 
 public class View {
     private Stage primaryStage;

@@ -2,6 +2,7 @@ package projectabc;
 import javafx.scene.control.Alert;
 import java.time.LocalDate;
 import java.util.List;
+import javafx.scene.paint.Color;
 
 public class Notification {
     public static void showReminder(List<ToDoItem> todos) {

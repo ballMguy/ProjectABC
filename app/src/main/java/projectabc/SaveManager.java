@@ -1,8 +1,5 @@
 package projectabc;
-
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.Gson;
@@ -18,10 +15,15 @@ public class SaveManager {
     }
 
     public static List<ToDoItem> loadUserData(String username) {
-        try (FileReader reader = new FileReader("data/" + username + "_todos.json")) {
-            return new Gson().fromJson(reader, new TypeToken<List<ToDoItem>>(){}.getType());
+        File file = new File("data/" + username + "_todos.json");
+        if (!file.exists()) {
+            return new ArrayList<>(); // 🔥 ถ้าไฟล์ไม่มี ให้คืนค่าเป็นลิสต์ว่าง
+        }
+        try (FileReader reader = new FileReader(file)) {
+            return new Gson().fromJson(reader, new TypeToken<List<ToDoItem>>() {}.getType());
         } catch (IOException e) {
-            return new ArrayList<>(); // ถ้าไม่มีไฟล์ให้คืนค่าเป็นลิสต์ว่าง
+            e.printStackTrace();
+            return new ArrayList<>(); // 🔥 ถ้าอ่านไฟล์ไม่ได้ ให้คืนค่าลิสต์ว่าง
         }
     }
 }
