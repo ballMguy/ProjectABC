@@ -1,4 +1,5 @@
 package projectabc;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -20,22 +21,31 @@ public class View {
     }
 
     public void showDashboard() {
-        Label userLabel = new Label("User: " + username);
-        Button logoutButton = new Button("Logout");
-        Button manageButton = new Button("Manage To-Do List");
+    Label userLabel = new Label("User: " + username);
+    Label textLabel = new Label("รายการสิ่งที่ต้องทำ");
+    Button logoutButton = new Button("Logout");
+    Button manageButton = new Button("Manage To-Do List");
 
-        logoutButton.setOnAction(e -> {
-            Database.saveUserTodos(username, todoList); // ✅ ใช้ Database แทน SaveManager
-            primaryStage.setScene(new AuthApp().getLoginScene());
-        });
-        
+    // ✅ แสดง To-Do List แต่ไม่ให้แก้ไข
+    ListView<ToDoItem> listView = new ListView<>();
+    listView.getItems().addAll(todoList);  // โหลดข้อมูลจาก Manager
+    listView.setDisable(false); // ทำให้เป็น Read-Only
 
-        manageButton.setOnAction(e -> new Manager(primaryStage, username, todoList).showManager());
+    logoutButton.setOnAction(e -> {
+        SaveManager.saveUserData(username, todoList);
+        AuthApp authApp = new AuthApp();
+        primaryStage.setScene(authApp.getLoginScene());
+    });
 
-        VBox layout = new VBox(10, userLabel, manageButton, logoutButton);
-        layout.setSpacing(10);
-        primaryStage.setScene(new Scene(layout, 400, 300));
+    manageButton.setOnAction(e -> new Manager(primaryStage, username, todoList).showManager());
 
-        Notification.showReminder(todoList);
-    }
+    VBox layout = new VBox(10, userLabel, textLabel, listView, manageButton, logoutButton);
+    layout.setSpacing(10);
+    layout.setAlignment(Pos.CENTER);
+    
+    primaryStage.setScene(new Scene(layout, 400, 300));
+
+    Notification.showReminder(todoList);
+}
+
 }
