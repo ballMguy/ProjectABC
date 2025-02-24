@@ -1,24 +1,36 @@
 package projectabc;
-import java.time.LocalDate;
 import javafx.scene.paint.Color;
+import java.time.LocalDate;
 
 public class ToDoItem {
     private String task;
     private LocalDate deadline;
-    private Tag tag;
+    private Color color; // เพิ่มฟิลด์สำหรับสี
 
-    public ToDoItem(String task, LocalDate deadline, Tag tag) {
+    public ToDoItem(String task, LocalDate deadline, Color color) {
         this.task = task;
         this.deadline = deadline;
-        this.tag = tag;
+        this.color = color;
     }
 
-    public String getTask() { return task; }
-    public LocalDate getDeadline() { return deadline; }
-    public Tag getTag() { return tag; }
+    public String getTask() {
+        return task;
+    }
+
+    public LocalDate getDeadline() {
+        return deadline;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
 
     @Override
     public String toString() {
-        return task + " (" + deadline + ") - " + tag.getName();
+        return task + " (Due: " + deadline + ")";
     }
 }

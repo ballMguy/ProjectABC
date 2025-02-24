@@ -3,13 +3,6 @@
  */
 package projectabc;
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.scene.layout.VBox;
-import javafx.application.Application;
-import javafx.stage.Stage;
-import javafx.scene.paint.Color;
-
 
 public class Main {
     public static void main(String[] args) {

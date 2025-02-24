@@ -1,4 +1,5 @@
 package projectabc;
+
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -7,6 +8,7 @@ import javafx.stage.Stage;
 import java.time.LocalDate;
 import java.util.List;
 import javafx.scene.paint.Color;
+import javafx.util.Callback;
 
 public class Manager {
     private Stage primaryStage;
@@ -35,20 +37,45 @@ public class Manager {
         // ListView แสดง To-Do
         ListView<ToDoItem> listView = new ListView<>();
         listView.getItems().addAll(todoList);
-
+        
+        // กำหนดสีของรายการใน ListView
+        listView.setCellFactory(param -> new ListCell<>() {
+            @Override
+            protected void updateItem(ToDoItem item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setTextFill(null);
+                } else {
+                    setText(item.getTask() + " (Due: " + item.getDeadline() + ")");
+                    setTextFill(item.getColor());
+                }
+            }
+        });
+        
         // ช่องกรอกข้อมูล To-Do ใหม่
         TextField taskField = new TextField();
         DatePicker deadlinePicker = new DatePicker();
-        ComboBox<Tag> tagBox = new ComboBox<>();
-        tagBox.getItems().addAll(Tag.getAvailableTags());
+        
+        // ComboBox สำหรับเลือกสีของตัวอักษร
+        ComboBox<String> colorComboBox = new ComboBox<>();
+        colorComboBox.getItems().addAll("Black", "Red", "Blue", "Green");
+        colorComboBox.setValue("Black");
 
         // ปุ่มเพิ่มรายการ
         Button addButton = new Button("Add Task");
         addButton.setOnAction(e -> {
             if (!taskField.getText().isEmpty() && deadlinePicker.getValue() != null) {
-                ToDoItem newItem = new ToDoItem(taskField.getText(), deadlinePicker.getValue(), tagBox.getValue());
+                Color color = switch (colorComboBox.getValue()) {
+                    case "Red" -> Color.RED;
+                    case "Blue" -> Color.BLUE;
+                    case "Green" -> Color.GREEN;
+                    default -> Color.BLACK;
+                };
+                ToDoItem newItem = new ToDoItem(taskField.getText(), deadlinePicker.getValue(), color);
                 todoList.add(newItem);
                 listView.getItems().add(newItem);
+                listView.refresh(); // รีเฟรช ListView เพื่ออัปเดตสี
                 SaveManager.saveUserData(username, todoList); // บันทึกข้อมูล
             }
         });
@@ -65,7 +92,7 @@ public class Manager {
         });
 
         // Layout ส่วนกลาง
-        VBox centerLayout = new VBox(10, listView, deleteButton, taskField, deadlinePicker, tagBox, addButton);
+        VBox centerLayout = new VBox(10, listView, deleteButton, taskField, deadlinePicker, colorComboBox, addButton);
         centerLayout.setAlignment(Pos.CENTER);
 
         // Layout หลัก

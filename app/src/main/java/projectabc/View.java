@@ -46,6 +46,19 @@ public class View {
     primaryStage.setScene(new Scene(layout, 400, 300));
 
     Notification.showReminder(todoList);
+    listView.setCellFactory(param -> new ListCell<>() {
+        @Override
+        protected void updateItem(ToDoItem item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+                setText(null);
+                setTextFill(null);
+            } else {
+                setText(item.getTask() + " (Due: " + item.getDeadline() + ")");
+                setTextFill(item.getColor());
+            }
+        }
+    });
 }
 
 }
