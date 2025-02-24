@@ -8,7 +8,6 @@ import javafx.stage.Stage;
 import java.time.LocalDate;
 import java.util.List;
 import javafx.scene.paint.Color;
-import javafx.util.Callback;
 
 public class Manager {
     private Stage primaryStage;
@@ -76,8 +75,9 @@ public class Manager {
                 todoList.add(newItem);
                 listView.getItems().add(newItem);
                 listView.refresh(); // รีเฟรช ListView เพื่ออัปเดตสี
-                SaveManager.saveUserData(username, todoList); // บันทึกข้อมูล
+                
             }
+            Database.saveUsers();
         });
 
         // ปุ่มลบรายการ
@@ -87,8 +87,9 @@ public class Manager {
             if (selectedItem != null) {
                 todoList.remove(selectedItem);
                 listView.getItems().remove(selectedItem);
-                SaveManager.saveUserData(username, todoList); // บันทึกข้อมูล
+                
             }
+            Database.saveUsers();
         });
 
         // Layout ส่วนกลาง

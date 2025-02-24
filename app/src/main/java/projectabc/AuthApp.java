@@ -5,15 +5,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.scene.paint.Color;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class AuthApp extends Application {
 
-    private Map<String, String> users = new HashMap<>();
+    
     private Stage primaryStage;
+    
 
     @Override
     public void start(Stage stage) {
