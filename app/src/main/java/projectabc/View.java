@@ -32,8 +32,8 @@ public class View {
 
         logoutButton.setOnAction(e -> {
             SaveManager.saveUserData(username, todoList);
-            AuthApp authApp = new AuthApp();
-            primaryStage.setScene(authApp.getLoginScene());
+            AuthApp authApp = new AuthApp(this.primaryStage);
+            authApp.getLoginScene(this.primaryStage);
         });
 
         manageButton.setOnAction(e -> new Manager(primaryStage, username, todoList).showManager());

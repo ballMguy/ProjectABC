@@ -19,7 +19,9 @@ public class Manager {
         this.username = user;
         this.todoList = todos;
     }
+    
 
+    
     public void showManager() {
         // ชื่อผู้ใช้มุมซ้าย
         Label userLabel = new Label("User: " + username);
@@ -78,6 +80,7 @@ public class Manager {
                 
             }
             Database.saveUsers();
+            
         });
 
         // ปุ่มลบรายการ
@@ -90,6 +93,7 @@ public class Manager {
                 
             }
             Database.saveUsers();
+            
         });
 
         // Layout ส่วนกลาง

@@ -6,6 +6,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 public class SaveManager {
+
+   
     public static void saveUserData(String username, List<ToDoItem> todos) {
         try (FileWriter writer = new FileWriter(username + "_todos.json")) {
             String json = new Gson().toJson(todos);
@@ -15,6 +17,7 @@ public class SaveManager {
             e.printStackTrace();
         }
     }
+    
     
 
     public static List<ToDoItem> loadUserData(String username) {
