@@ -16,9 +16,4 @@ public class Main extends Application {
         launch(args);
     }
 }
-    // pub
-    // lic static void main(String[] args) {
-    //     Application.launch(AuthApp.class, args);
-    // }
     
-// }

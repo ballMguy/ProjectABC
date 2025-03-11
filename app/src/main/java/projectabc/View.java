@@ -24,11 +24,15 @@ public class View {
         Label textLabel = new Label("รายการสิ่งที่ต้องทำ");
         Button logoutButton = new Button("Logout");
         Button manageButton = new Button("Manage To-Do List");
-
+        manageButton.setId("manageButton");
+        userLabel.setId("userLabel");
+        logoutButton.setId("logoutButton");
+        
         // ✅ แสดง To-Do List แต่ไม่ให้แก้ไข
         ListView<ToDoItem> listView = new ListView<>();
         listView.getItems().addAll(todoList); // โหลดข้อมูลจาก Manager
         listView.setDisable(false); // ทำให้เป็น Read-Only
+        listView.setId("listView");
 
         logoutButton.setOnAction(e -> {
             SaveManager.saveUserData(username, todoList);

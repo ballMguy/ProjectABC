@@ -12,20 +12,9 @@ import java.util.Map;
 public class AuthApp{
 
     
-    // private Stage primaryStage;
-    
-
-    // @Override
-    // public void start(Stage stage) {
-    //     this.primaryStage = stage;
-    //     stage.setTitle("Login System");
-    //     stage.setScene(getLoginScene());
-    //     stage.show();
-    // }
+   
     public AuthApp(Stage primaryStage){
         getLoginScene(primaryStage);
-
-
     }
     void getLoginScene(Stage primaryStage) {
         Label userLabel = new Label("Username:");
@@ -34,6 +23,13 @@ public class AuthApp{
         PasswordField passwordField = new PasswordField();
         Button loginButton = new Button("Login");
         Button registerButton = new Button("Register");
+
+        usernameField.setId("usernameField");
+        passwordField.setId("passwordField");
+        loginButton.setId("loginButton");
+        registerButton.setId("registerButton");
+        
+       
 
         loginButton.setOnAction(e -> handleLogin(usernameField.getText(), passwordField.getText(),primaryStage));
         registerButton.setOnAction(e -> primaryStage.setScene(getRegisterScene(primaryStage)));
@@ -51,6 +47,10 @@ public class AuthApp{
         PasswordField passwordField = new PasswordField();
         Button registerButton = new Button("Register");
         Button backButton = new Button("Back");
+        usernameField.setId("usernameFieldReg");
+        passwordField.setId("passwordFieldReg");
+        backButton.setId("backButton");
+        registerButton.setId("registerButtonReg");
 
         registerButton.setOnAction(e -> handleRegister(usernameField.getText(), passwordField.getText(),primaryStage));
         backButton.setOnAction(e -> getLoginScene(primaryStage));
