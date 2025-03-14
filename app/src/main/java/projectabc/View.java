@@ -7,18 +7,31 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.util.List;
 
-
+/**
+ * คลาส View ใช้สำหรับแสดงหน้าหลักของแอปพลิเคชัน โดยแสดง To-Do List ของผู้ใช้
+ * และให้สามารถไปยังหน้าจัดการ To-Do List ได้
+ */
 public class View {
     private Stage primaryStage;
     private String username;
     private List<ToDoItem> todoList;
 
+    /**
+     * สร้างอินสแตนซ์ของ View
+     * 
+     * @param stage เวทีหลักของ JavaFX
+     * @param user ชื่อผู้ใช้ที่เข้าสู่ระบบ
+     * @param todos รายการสิ่งที่ต้องทำของผู้ใช้
+     */
     public View(Stage stage, String user, List<ToDoItem> todos) {
         this.primaryStage = stage;
         this.username = user;
         this.todoList = todos;
     }
 
+    /**
+     * แสดงหน้าหลัก (Dashboard) ซึ่งประกอบด้วยรายการสิ่งที่ต้องทำและปุ่มสำหรับจัดการ
+     */
     public void showDashboard() {
         Label userLabel = new Label("User: " + username);
         Label textLabel = new Label("รายการสิ่งที่ต้องทำ");
@@ -48,7 +61,10 @@ public class View {
 
         primaryStage.setScene(new Scene(layout, 400, 300));
 
+        // แสดงการแจ้งเตือนสำหรับงานที่ใกล้ถึงกำหนด
         Notification.showReminder(todoList);
+
+        // กำหนดรูปแบบการแสดงผลของรายการ To-Do
         listView.setCellFactory(param -> new ListCell<>() {
             @Override
             protected void updateItem(ToDoItem item, boolean empty) {
@@ -63,5 +79,4 @@ public class View {
             }
         });
     }
-
 }

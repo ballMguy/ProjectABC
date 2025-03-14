@@ -1,4 +1,5 @@
 package projectabc;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
@@ -8,6 +9,9 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+/**
+ * คลาส Database ใช้สำหรับจัดการข้อมูลผู้ใช้ รวมถึงการเข้ารหัสและถอดรหัสข้อมูล
+ */
 public class Database {
     private static final String FILE_PATH = "users_encrypted.json"; //เก็บข้อมูลแบบเข้ารหัส
     private static final String SECRET_KEY = "0123456789abcdef"; // คีย์เข้ารหัส AES (ต้องมี 16 ตัวอักษร)
@@ -16,9 +20,10 @@ public class Database {
     static {
         loadUsers();
     }
-    
 
-    // โหลดข้อมูลผู้ใช้จากไฟล์ (Decrypt)
+    /**
+     * โหลดข้อมูลผู้ใช้จากไฟล์และถอดรหัส
+     */
     public static void loadUsers() {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
             String encryptedData = reader.readLine();
@@ -33,7 +38,9 @@ public class Database {
         }
     }
 
-    // บันทึกข้อมูลลงไฟล์ (Encrypt)
+    /**
+     * บันทึกข้อมูลผู้ใช้ลงไฟล์โดยเข้ารหัสข้อมูลก่อนบันทึก
+     */
     public static void saveUsers() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
             String json = new Gson().toJson(users);
@@ -44,7 +51,13 @@ public class Database {
         }
     }
 
-    // เพิ่มผู้ใช้ใหม่
+    /**
+     * ลงทะเบียนผู้ใช้ใหม่
+     * 
+     * @param username ชื่อผู้ใช้
+     * @param password รหัสผ่าน
+     * @return true ถ้าสมัครสำเร็จ, false ถ้าชื่อผู้ใช้มีอยู่แล้ว
+     */
     public static boolean registerUser(String username, String password) {
         if (users.containsKey(username)) {
             return false; // มีชื่อผู้ใช้อยู่แล้ว
@@ -54,23 +67,43 @@ public class Database {
         return true;
     }
 
-    // ตรวจสอบการ Login
+    /**
+     * ตรวจสอบข้อมูลการเข้าสู่ระบบ
+     * 
+     * @param username ชื่อผู้ใช้
+     * @param password รหัสผ่าน
+     * @return true ถ้าข้อมูลถูกต้อง, false ถ้าไม่ถูกต้อง
+     */
     public static boolean validateUser(String username, String password) {
         return users.containsKey(username) && decrypt(users.get(username)).equals(password);
     }
 
-    // โหลดรายการ To-Do ของผู้ใช้
+    /**
+     * โหลดรายการ To-Do ของผู้ใช้
+     * 
+     * @param username ชื่อผู้ใช้
+     * @return รายการ To-Do ของผู้ใช้
+     */
     public static List<ToDoItem> loadUserTodos(String username) {
         return SaveManager.loadUserData(username);
     }
 
-    // บันทึก To-Do List ของผู้ใช้
+    /**
+     * บันทึก To-Do List ของผู้ใช้
+     * 
+     * @param username ชื่อผู้ใช้
+     * @param todoList รายการ To-Do ที่ต้องการบันทึก
+     */
     public static void saveUserTodos(String username, List<ToDoItem> todoList) {
         SaveManager.saveUserData(username, todoList);
-        
     }
 
-    // ฟังก์ชันเข้ารหัส AES
+    /**
+     * ฟังก์ชันเข้ารหัสข้อความโดยใช้ AES
+     * 
+     * @param data ข้อความที่ต้องการเข้ารหัส
+     * @return ข้อความที่ถูกเข้ารหัส
+     */
     private static String encrypt(String data) {
         try {
             SecretKeySpec secretKey = new SecretKeySpec(SECRET_KEY.getBytes(), "AES");
@@ -82,7 +115,12 @@ public class Database {
         }
     }
 
-    // ฟังก์ชันถอดรหัส AES
+    /**
+     * ฟังก์ชันถอดรหัสข้อความที่ถูกเข้ารหัส AES
+     * 
+     * @param encryptedData ข้อความที่ถูกเข้ารหัส
+     * @return ข้อความที่ถูกถอดรหัส
+     */
     private static String decrypt(String encryptedData) {
         try {
             SecretKeySpec secretKey = new SecretKeySpec(SECRET_KEY.getBytes(), "AES");
